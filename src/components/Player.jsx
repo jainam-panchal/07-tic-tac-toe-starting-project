@@ -31,7 +31,7 @@ export default function Player({ initialName, icon, isActive }) {
             </span>
 
             {/* Edit/Save Button */}
-            <button onClick={handleEditClick}>{isEditing ? "Save" : "Edit"}</button>
+            <button onClick={handleEditClick}  >{isEditing ? "Save" : "Edit"}</button>
 
         </li>
     )
