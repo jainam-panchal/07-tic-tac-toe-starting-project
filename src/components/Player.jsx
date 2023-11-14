@@ -1,11 +1,37 @@
-export default function Player ({name, icon}) {
+import { useState } from 'react'
+
+export default function Player({ initialName, icon }) {
+
+    const [isEditing, setIsEditing] = useState(false)
+    const [playerName, setPlayerName] = useState(initialName)
+
+    function handleEditClick() {
+        //NOTE : Updating State Based On Old State
+        //setIsEditing(!isEditing)                 <------ this is a bad practice
+        //setIsEditing(wasEditing => !wasEditing)  <------ Best Practice
+        setIsEditing((editing) => !editing)
+    }
+
+    function handleInputChange(e) {
+        setPlayerName(e.target.value)
+    }
+
     return (
         <li>
             <span className="player">
-                <span className="player-name">{name}</span>
+
+                {/*Player Name*/}
+                {/* defaultValue={playerName} onChange={handleInputChange} <------- called Two Way Binding */}
+                {isEditing ? <input type="text" required defaultValue={playerName} onChange={handleInputChange} /> : <span className="player-name">{playerName}</span>}
+
+                {/*Player Icon*/}
                 <span className="player-symbol">{icon}</span>
+
             </span>
-            <button>Edit</button>
+
+            {/* Edit/Save Button */}
+            <button onClick={handleEditClick}>{isEditing ? "Save" : "Edit"}</button>
+
         </li>
     )
 }
