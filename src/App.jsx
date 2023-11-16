@@ -24,7 +24,7 @@ function App() {
 
     function handleSelectSquare(rowIndex, colIndex) {
         //change game turn
-        setActivePlayer(wasActivePlayer => wasActivePlayer === 'X' ? 'O' : 'X')
+        //setActivePlayer(wasActivePlayer => wasActivePlayer === 'X' ? 'O' : 'X')
         setGameTurns((prevTurns) => {
 
             // NOTE: at the current point
