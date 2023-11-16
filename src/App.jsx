@@ -1,31 +1,53 @@
+import Player from "./components/Player.jsx"
+import Gameboard from "./components/GameBoard.jsx";
 import { useState } from "react"
-
-import Player from "./components/Player"
-import GameBoard from "./components/GameBoard"
+import Log from "./components/Log.jsx";
 
 function App() {
+    const [gameTurns, setGameTurns] = useState([])
 
     // Concept : Lifting State Up
     // Lift the state up to the closest ancestor component that has access to all components that need to work with that state
     // here we need activePlayer in both Player component as well as in Gameboard
-    
-    const [activePlayer, setActivePlayer] = useState('X')
 
-    function handleSelectSquare() {
-        setActivePlayer((curActivePlayer) => curActivePlayer === 'X' ? 'O' : 'X')
+    const [activePlayer, setActivePlayer] = useState('X');
+
+    function handleSelectSquare(rowIndex, colIndex) {
+        //change game turn
+        setActivePlayer(wasActivePlayer => wasActivePlayer === 'X' ? 'O' : 'X')
+        setGameTurns((prevTurns) => {
+
+            // at the current point
+            let currentPlayer = 'X'
+            if (prevTurns.length > 0 && prevTurns[0].player === 'X') {
+                currentPlayer = 'O'
+            }
+
+            const updatedTurns = [
+                // NOT A GOOD IDEA BECAUSE activePlayer is dependent
+                //{ square: { row: rowIndex, col: colIndex }, player: activePlayer }
+                {
+                    square: { row: rowIndex, col: colIndex },
+                    player: currentPlayer
+                },
+                ...prevTurns,
+            ]
+
+            return updatedTurns
+        })
+
     }
 
     return (
         <>
-            <main>
-                <div id="game-container">
-                    <ol id="players" className="highlight-player">
-                        <Player initialName="Player 1" icon="X" isActive={activePlayer === 'X'} />
-                        <Player initialName="Player 2" icon="O" isActive={activePlayer === 'O'} />
-                    </ol>
-                    <GameBoard activePlayer={activePlayer} onSelectSquare={handleSelectSquare} />
-                </div>
-            </main>
+            <div id="game-container">
+                <ol id="players" className="highlight-player">
+                    <Player initialName="Player 1" symbol="X" isActive={activePlayer === 'X'} />
+                    <Player initialName="Player 2" symbol="O" isActive={activePlayer === 'O'} />
+                </ol>
+                <Gameboard onSelectSquare={handleSelectSquare} turns={gameTurns} />
+            </div>
+            <Log turns={gameTurns} />
         </>
     )
 }
