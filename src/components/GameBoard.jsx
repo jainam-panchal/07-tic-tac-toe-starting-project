@@ -1,10 +1,4 @@
-const INIT_GAME_BOARD = [
-    [null, null, null],
-    [null, null, null],
-    [null, null, null],
-];
-
-export default function Gameboard({ onSelectSquare, turns }) {
+export default function Gameboard({ onSelectSquare, board }) {
 
     //const [gameBoard, setGameBoard] = useState(INIT_GAME_BOARD)
     //function handleSelectSquare(rowIndex, colIndex) {
@@ -27,22 +21,19 @@ export default function Gameboard({ onSelectSquare, turns }) {
     //    onSelectSquare()
     //}
 
-    // NOTE: Deriving State
-    let gameBoard = INIT_GAME_BOARD;
-    for (const turn of turns) {
-        const { square, player } = turn
-        const { row, col } = square
-        gameBoard[row][col] = player
-    }
 
     return (
         <ol id="game-board">
-            {gameBoard.map((row, rowIndex) => (
+            {board.map((row, rowIndex) => (
                 <li key={rowIndex}>
                     <ol>
                         {row.map((playerSymbol, colIndex) => (
                             <li key={colIndex}>
-                                <button onClick={() => onSelectSquare(rowIndex, colIndex)}>{playerSymbol}</button>
+                                <button
+                                    onClick={() => onSelectSquare(rowIndex, colIndex)}
+                                    disabled={playerSymbol !== null}>
+                                    {playerSymbol}
+                                </button>
                             </li>
                         ))}
                     </ol>
